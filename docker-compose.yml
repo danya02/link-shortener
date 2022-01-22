@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./links.db:/links.db
+    expose: ["8000"]
+    ports:
+      - 8000:8000
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.temp-file-sharing.rule=Host(`errors.danya02.ru`)"
+     - "traefik.http.routers.temp-file-sharing.entrypoints=web"
+     - "traefik.http.services.temp-file-sharing.loadbalancer.server.port=8000"
+    networks:
+     - proxy
+
+networks:
+  proxy:
+    external: true
+
