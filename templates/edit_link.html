@@ -6,13 +6,11 @@
 
 	<body>
 		<form method="post">
-			<label for="name">Name:</label> <input type="text" id="name" name="name" required value="{{link.name}}">
+			<label for="name">Name:</label> <input type="text" id="name" name="name" required value="{{link.name}}"> <br>
 			<label for="description">Description:</label>
-			<textarea id="description" name="description">
-				{{ link.description }}
-			</textarea>
-			<label for="slug">Slug:</label> <input type="text" id="slug" name="slug" required value="{{link.slug}}">
-			<label for="target">Target:</label> <input type="text" id="target" name="target" required value="{{link.target}}">
+			<textarea id="description" name="description">{{ link.description }}</textarea> <br>
+			<label for="slug">Slug:</label> <input type="text" id="slug" name="slug" required value="{{link.slug}}"><br>
+			<label for="target">Target:</label> <input type="text" id="target" name="target" required value="{{link.target_url}}"><br>
 			<input type="submit">
 		</form>
 

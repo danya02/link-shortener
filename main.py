@@ -35,7 +35,15 @@ def get_redirect(slug):
 @app.route('/dashboard')
 @basic_auth.required
 def dashboard():
-    return render_template('dashboard.html', Link=Link, pw=pw, Visit=Visit)
+    data = []
+    for item in Link.select():
+        visit_count = Visit.select(pw.fn.count(1)).where(Visit.link == item).scalar()
+        if visit_count:
+            latest_visit = Visit.select().order_by(Visit.date_accessed.desc()).get().date_accessed.ctime()
+        else:
+            latest_visit = "never"
+        data.append((item, visit_count, latest_visit))
+    return render_template('dashboard.html', data=data)
 
 @app.route('/dashboard/create')
 @basic_auth.required
@@ -43,6 +51,7 @@ def create_link():
     slug = []
     for _ in range(6):
         slug.append(random.choice(string.ascii_letters))
+    slug = ''.join(slug)
     link = Link.create(
             name="New link",
             description="New link description",

@@ -15,15 +15,17 @@
 				<th>Latest visit</th>
 			</tr>
 			
-			{% for link in Link.select(Link, Visit.alias('latest_visit'), pw.fn.Count(Visit.id).alias('visits')).join(Visit, pw.JOIN.LEFT_OUTER).order_by(Visit.date_accessed.desc()).group_by(Link) %}
+			{% for link, visit_count, latest_visit in data %}
 			<tr>
-				<td>{{ link.name }}</td>
+				<td><a href="{{url_for('edit_link', id=link.id)}}">{{ link.name }}</a></td>
 				<td><code>{{ link.slug }}</code></td>
-				<td>{{ link.visits }}</td>
-				<td>{{ link.latest_visit }}</td>
+				<td>{{ visit_count }}</td>
+				<td>{{ latest_visit }}</td>
 			</tr>
 			{% endfor %}
 
 		</table>
+
+		<a href="{{url_for('create_link')}}">Create new link</a>
 	</body>
 </html>

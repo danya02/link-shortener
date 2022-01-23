@@ -16,7 +16,7 @@ class Link(MyModel):
 
 class Visit(MyModel):
     link = pw.ForeignKeyField(Link, backref='links')
-    date_accessed = pw.DateTimeField(default=dt.datetime.now)
+    date_accessed = pw.DateTimeField(default=dt.datetime.now, index=True)
     ip_address = pw.IPField()
 
 db.create_tables([Link, Visit])
