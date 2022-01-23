@@ -19,4 +19,19 @@ class Visit(MyModel):
     date_accessed = pw.DateTimeField(default=dt.datetime.now)
     ip_address = pw.IPField()
 
-db.create_tables([Link, Visit])
+class User(MyModel):
+    username = pw.CharField(unique=True)
+    user_handle = pw.BlobField()
+
+class Credential(MyModel):
+    user = pw.ForeignKeyField(User)
+    raw_id = pw.BlobField()
+    signature_count = pw.IntegerField(null=True)
+    public_key = pw.BlobField()
+
+class Challenge(MyModel):
+    user = pw.ForeignKeyField(User)
+    request = pw.BlobField()
+    dt = pw.DateTimeField(default=dt.datetime.now)
+
+db.create_tables([Link, Visit, User, Credential, Challenge])

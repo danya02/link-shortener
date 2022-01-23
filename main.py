@@ -1,6 +1,19 @@
 from flask import Flask, request, redirect
+from database import *
+import webauthn
 
 app = Flask(__name__)
+app.register_blueprint(webauthn.bp)
+
+@app.before_request
+def connect_db():
+    db.connect()
+
+@app.after_request
+def close_db(response):
+    db.close()
+    return response
+
 
 @app.route('/')
 def index():
@@ -9,7 +22,7 @@ def index():
 @app.route('/<slug>')
 def get_redirect(slug):
     link = Link.get_or_none(slug=slug)
-    if not Link:
+    if not link:
         return "No such link", 404
 
     if 'X-Very-Real-IP' in request.headers:
@@ -18,3 +31,6 @@ def get_redirect(slug):
         ip = request.remote_addr
     Visit.create(link=link, ip_address=ip)
     return redirect(link.target_url)
+
+
+
