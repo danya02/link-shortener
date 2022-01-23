@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Editing {{ link.title }}</title>
+	</head>
+
+	<body>
+		<form method="post">
+			<label for="name">Name:</label> <input type="text" id="name" name="name" required value="{{link.name}}">
+			<label for="description">Description:</label>
+			<textarea id="description" name="description">
+				{{ link.description }}
+			</textarea>
+			<label for="slug">Slug:</label> <input type="text" id="slug" name="slug" required value="{{link.slug}}">
+			<label for="target">Target:</label> <input type="text" id="target" name="target" required value="{{link.target}}">
+			<input type="submit">
+		</form>
+
+		<table border=1>
+			<tr>
+				<th>Date</th>
+				<th>IP address</th>
+				<th>Delete?</th>
+			</tr>
+			{% for visit in Visit.select().where(Visit.link == link).iterator() %}
+			<tr>
+				<td>{{ visit.date_accessed }}</td>
+				<td>{{ visit.ip_address }}</td>
+				<td>
+					<form method="post" action="{{ url_for('delete_visit', id=visit.id) }}">
+						<input type="submit" value="X">
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+</html>

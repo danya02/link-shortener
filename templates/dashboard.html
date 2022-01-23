@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Link shortener dashboard</title>
+	</head>
+
+	<body>
+		<h1>Link shortener dashboard</h1>
+
+		<table border=1>
+			<tr>
+				<th>Name</th>
+				<th>Slug</th>
+				<th>Visits</th>
+				<th>Latest visit</th>
+			</tr>
+			
+			{% for link in Link.select(Link, Visit.alias('latest_visit'), pw.fn.Count(Visit.id).alias('visits')).join(Visit, pw.JOIN.LEFT_OUTER).order_by(Visit.date_accessed.desc()).group_by(Link) %}
+			<tr>
+				<td>{{ link.name }}</td>
+				<td><code>{{ link.slug }}</code></td>
+				<td>{{ link.visits }}</td>
+				<td>{{ link.latest_visit }}</td>
+			</tr>
+			{% endfor %}
+
+		</table>
+	</body>
+</html>

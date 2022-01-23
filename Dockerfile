@@ -8,6 +8,7 @@ ENV PYTHONUNBUFFERED yes
 COPY static/ /static
 COPY templates/ /templates
 COPY database.py /
+COPY passwd.py /
 COPY main.py /
 
 

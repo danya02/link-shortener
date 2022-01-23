@@ -3,6 +3,8 @@ services:
   web:
     build: .
     restart: unless-stopped
+    env_file:
+      - conf.env
     volumes:
       - ./links.db:/links.db
     expose: ["8000"]
@@ -10,7 +12,7 @@ services:
       - 8000:8000
     labels:
      - "traefik.enable=true"
-     - "traefik.http.routers.temp-file-sharing.rule=Host(`errors.danya02.ru`)"
+     - "traefik.http.routers.temp-file-sharing.rule=Host(`l.danya02.ru`)"
      - "traefik.http.routers.temp-file-sharing.entrypoints=web"
      - "traefik.http.services.temp-file-sharing.loadbalancer.server.port=8000"
     networks:
